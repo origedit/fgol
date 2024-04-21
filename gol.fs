@@ -5,15 +5,15 @@ width height * constant size
 1000 20 / constant delay
 
 require random.fs
+utime drop seed !
 
 bl constant dead
 char # constant alive
 
-create board1   size chars allot
-create board2   size chars allot
-
-board1 value oldb
-board2 value newb
+here size chars allot
+here size chars allot
+value oldb
+value newb
 
 : swapb   oldb newb to oldb to newb ;
 
@@ -34,7 +34,8 @@ create ydirs
 
 : neighbors ( y x -- n )
  0 -rot 8 0 do
-  over i ydir + over i xdir + tile@ alive = if >r >r 1+ r> r> then
+  over i ydir + over i xdir + tile@
+  alive = if >r >r 1+ r> r> then
  loop 2drop ;
 
 : newstate ( neighbors state -- state )
@@ -59,8 +60,6 @@ create ydirs
   dup width type cr
   width chars +
  loop drop ;
-
-utime drop seed !
 
 : randomise
  oldb dup size chars + swap do
